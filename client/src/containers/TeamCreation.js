@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { css } from 'emotion'
-import { Header, Button, Card, Input, Label } from 'semantic-ui-react'
+import { Header, Button, Card, Input, Segment, List } from 'semantic-ui-react'
 
 const topics = [
   {
@@ -99,13 +99,29 @@ const TopicsStep = ({ topics, toggleTopic, teamName, changeTeamName }) => (
 
 const UsersStep = ({ users, addUser, email, name, changeInput }) => (
   <Fragment>
-    <Input
-      value={email}
-      placeholder="Email"
-      onChange={changeInput('userEmail')}
-    />
-    <Input value={name} onChange={changeInput('userName')} placeholder="Name" />
-    <Button icon="add" onClick={addUser} />
+    <Segment basic>
+      <Input
+        value={email}
+        placeholder="Email"
+        onChange={changeInput('userEmail')}
+      />
+      <Input
+        value={name}
+        onChange={changeInput('userName')}
+        placeholder="Name"
+      />
+      <Button icon="add" onClick={addUser} />
+    </Segment>
+    <List celled>
+      {users.map(u => (
+        <List.Item key={u.email}>
+          <List.Content>
+            <List.Header>{u.name}</List.Header>
+            {u.email}
+          </List.Content>
+        </List.Item>
+      ))}
+    </List>
   </Fragment>
 )
 
