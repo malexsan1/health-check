@@ -1,8 +1,6 @@
-import React from 'react'
-import { css } from 'emotion'
-import styled from 'styled-components'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Header, Container, List } from 'semantic-ui-react'
+import { Button, Header, List } from 'semantic-ui-react'
 
 const teams = [
   { id: 'team1', name: 'Team 1' },
@@ -11,7 +9,7 @@ const teams = [
 ]
 
 const MainDashboard = () => (
-  <Container className={containerMargin}>
+  <Fragment>
     <Header as="h1">Main dashboard</Header>
     <Button primary as={Link} to="/create-team">
       Create new team
@@ -25,17 +23,7 @@ const MainDashboard = () => (
         </List.Item>
       ))}
     </List>
-  </Container>
+  </Fragment>
 )
 
 export default MainDashboard
-
-// #region styled-components
-const containerMargin = css`
-  margin: 20px 0;
-`
-const Root = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-// #endregion

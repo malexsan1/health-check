@@ -1,5 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
+import { css } from 'emotion'
 import { Route } from 'react-router-dom'
+import { Container } from 'semantic-ui-react'
 
 import {
   TeamCreation,
@@ -9,12 +11,18 @@ import {
 } from './containers'
 
 const App = () => (
-  <Fragment>
+  <Container className={containerMargin}>
     <Route exact path="/" component={MainDashboard} />
     <Route path="/create-team" component={TeamCreation} />
     <Route path="/team/:teamId" component={TeamDashboard} />
     <Route path="/health-check/:teamId" component={HealthCheckSession} />
-  </Fragment>
+  </Container>
 )
 
 export default App
+
+// #region styles
+const containerMargin = css`
+  margin: 20px 0;
+`
+// #endregion
