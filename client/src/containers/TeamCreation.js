@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
-import { css } from 'emotion'
-import { Header, Button, Card, Input, Segment, List } from 'semantic-ui-react'
+import arrayMutators from 'final-form-arrays'
+import { FieldArray } from 'react-final-form-arrays'
+import { Form as FinalForm, Field } from 'react-final-form'
+import { Card, Form, Header, Button, Checkbox, Icon } from 'semantic-ui-react'
 
 const topics = [
   {
@@ -68,149 +70,140 @@ const topics = [
   },
 ]
 
-const TopicsStep = ({ topics, toggleTopic, teamName, changeTeamName }) => (
-  <Fragment>
-    <Header as="h3" textAlign="center">
-      Select topics
-    </Header>
-    <Input
-      fluid
-      value={teamName}
-      className={marginInput}
-      placeholder="Team name"
-      onChange={changeTeamName}
-    />
-    <Card.Group centered itemsPerRow={4}>
-      {topics.map(t => (
-        <Card
-          key={t.id}
-          onClick={toggleTopic(t.id)}
-          color={t.selected ? 'blue' : null}
-        >
-          <Card.Content>
-            <Card.Header>{t.name}</Card.Header>
-            <Card.Description>{t.description}</Card.Description>
-          </Card.Content>
-        </Card>
-      ))}
-    </Card.Group>
-  </Fragment>
-)
-
-const UsersStep = ({ users, addUser, email, name, changeInput }) => (
-  <Fragment>
-    <Segment basic>
-      <Input
-        value={email}
-        placeholder="Email"
-        onChange={changeInput('userEmail')}
-      />
-      <Input
-        value={name}
-        onChange={changeInput('userName')}
-        placeholder="Name"
-      />
-      <Button icon="add" onClick={addUser} />
-    </Segment>
-    <List celled>
-      {users.map(u => (
-        <List.Item key={u.email}>
-          <List.Content>
-            <List.Header>{u.name}</List.Header>
-            {u.email}
-          </List.Content>
-        </List.Item>
-      ))}
-    </List>
-  </Fragment>
-)
-
 class TeamCreation extends Component {
-  state = {
-    topics,
-    step: 0,
-    users: [
-      { email: 'coco@san.com', name: 'plm cocobau' },
-      { email: 'coco1@san.com', name: 'plm cocobau2' },
-    ],
-    userName: '',
-    teamName: '',
-    userEmail: '',
+  submit = values => {
+    console.log(values)
   }
 
-  addUser = () => {
-    this.setState(prev => ({
-      userName: '',
-      userEmail: '',
-      users: [...prev.users, { email: prev.userEmail, name: prev.userName }],
-    }))
-  }
-
-  changeInput = key => e => {
-    this.setState({
-      [key]: e.target.value,
-    })
-  }
-
-  changeStep = val => () => {
-    this.setState(prevState => ({
-      step: prevState.step + val,
-    }))
-  }
-
-  submit = () => {
-    console.log(this.state)
-  }
-
-  toggleTopic = id => () => {
-    this.setState(prev => ({
-      topics: prev.topics.map(
-        t => (t.id === id ? { ...t, selected: !t.selected } : t),
-      ),
-    }))
+  getFormInitialValues = () => {
+    const t = topics.reduce((acc, el) => ({ ...acc, [el.id]: false }), {})
+    return {
+      ...t,
+      team: 'lala',
+    }
   }
 
   render() {
-    const { step, topics, teamName, userEmail, userName, users } = this.state
     return (
       <Fragment>
-        <Header as="h1">Create new team</Header>
-
-        {step === 0 && (
-          <TopicsStep
-            topics={topics}
-            teamName={teamName}
-            toggleTopic={this.toggleTopic}
-            changeTeamName={this.changeInput('teamName')}
-          />
-        )}
-        {step === 1 && (
-          <UsersStep
-            users={users}
-            name={userName}
-            email={userEmail}
-            addUser={this.addUser}
-            changeInput={this.changeInput}
-          />
-        )}
-        <Button.Group compact>
-          {step !== 0 && <Button onClick={this.changeStep(-1)}>Back</Button>}
-          <Button
-            onClick={step === 0 ? this.changeStep(1) : this.submit}
-            primary
-          >
-            {step === 0 ? 'Next' : 'Submit'}
-          </Button>
-        </Button.Group>
+        <Header as="h1">Create team</Header>
+        <FinalForm
+          onSubmit={this.submit}
+          mutators={{ ...arrayMutators }}
+          initialValues={this.getFormInitialValues()}
+        >
+          {({
+            handleSubmit,
+            form: {
+              mutators: { push },
+            },
+          }) => {
+            return (
+              <Form onSubmit={handleSubmit}>
+                <Field name="team">
+                  {formField => (
+                    <Form.Field>
+                      <label>Team name</label>
+                      <input {...formField.input} />
+                    </Form.Field>
+                  )}
+                </Field>
+                <Form.Field>
+                  <label>Topics</label>
+                </Form.Field>
+                <Card.Group centered itemsPerRow={4}>
+                  {topics.map(t => (
+                    <Field key={t.id} name={t.id}>
+                      {({ input }) => (
+                        <Checkbox
+                          key={t.id}
+                          checked={input.value}
+                          onChange={(e, { checked }) => input.onChange(checked)}
+                          as={({ onChange }) => (
+                            <Card
+                              key={t.id}
+                              color={input.value ? 'blue' : null}
+                              onClick={onChange}
+                            >
+                              <Card.Content>
+                                <Card.Header>{t.name}</Card.Header>
+                                <Card.Description>
+                                  {t.description}
+                                </Card.Description>
+                              </Card.Content>
+                            </Card>
+                          )}
+                        />
+                      )}
+                    </Field>
+                  ))}
+                </Card.Group>
+                <Form.Field>
+                  <label>Team members</label>
+                  <Button
+                    icon
+                    labelPosition="right"
+                    onClick={e => {
+                      e.preventDefault()
+                      push('users', undefined)
+                    }}
+                  >
+                    <Icon name="add" />
+                    Add member
+                  </Button>
+                </Form.Field>
+                <FieldArray name="users">
+                  {({ fields }) =>
+                    fields.map((name, index) => (
+                      <Form.Group key={name} widths="equal">
+                        <Form.Field width="1">
+                          <label>&nbsp;</label>
+                          <span>{`#${index + 1}`}</span>
+                        </Form.Field>
+                        <Field name={`${name}.email`} placeholder="Email">
+                          {formField => (
+                            <Form.Field>
+                              <label>Email</label>
+                              <input {...formField.input} />
+                            </Form.Field>
+                          )}
+                        </Field>
+                        <Field name={`${name}.name`} placeholder="Name">
+                          {formField => (
+                            <Form.Field>
+                              <label>Name</label>
+                              <input {...formField.input} />
+                            </Form.Field>
+                          )}
+                        </Field>
+                        <Form.Field width="2">
+                          <label>&nbsp;</label>
+                          <Button
+                            icon
+                            labelPosition="right"
+                            onClick={e => {
+                              e.preventDefault()
+                              fields.remove(index)
+                            }}
+                          >
+                            Remove
+                            <Icon name="remove" />
+                          </Button>
+                        </Form.Field>
+                      </Form.Group>
+                    ))
+                  }
+                </FieldArray>
+                <Button type="submit" primary size="big">
+                  Submit
+                </Button>
+              </Form>
+            )
+          }}
+        </FinalForm>
       </Fragment>
     )
   }
 }
 
 export default TeamCreation
-
-// #region styles
-const marginInput = css`
-  margin: 15px 0;
-`
-// #endregion

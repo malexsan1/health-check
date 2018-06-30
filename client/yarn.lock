@@ -1446,6 +1446,10 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.4.1:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
+change-emitter@^0.1.2:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/change-emitter/-/change-emitter-0.1.6.tgz#e8b2fe3d7f1ab7d69a32199aff91ea6931409515"
+
 chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
@@ -2802,7 +2806,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs@^0.8.16, fbjs@^0.8.5:
+fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.5:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   dependencies:
@@ -2867,6 +2871,14 @@ fill-range@^4.0.0:
     is-number "^3.0.0"
     repeat-string "^1.6.1"
     to-regex-range "^2.1.0"
+
+final-form-arrays@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/final-form-arrays/-/final-form-arrays-1.0.4.tgz#74330cb4d64ce07bb1c4a9084d0b65afdac6bf72"
+
+final-form@^4.8.3:
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/final-form/-/final-form-4.8.3.tgz#86a03da6cd6459ed8fe3737dbd9dc87ed40c11d7"
 
 finalhandler@1.1.1:
   version "1.1.1"
@@ -3276,7 +3288,7 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -5731,9 +5743,23 @@ react-error-overlay@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-4.0.0.tgz#d198408a85b4070937a98667f500c832f86bd5d4"
 
+react-final-form-arrays@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-final-form-arrays/-/react-final-form-arrays-1.0.6.tgz#cf845f99965cbf8200f28ccb4cba471f25655691"
+  dependencies:
+    react-lifecycles-compat "^3.0.4"
+
+react-final-form@^3.6.4:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/react-final-form/-/react-final-form-3.6.4.tgz#1ca37935c2af0bc659a53b293dd84a75d2381548"
+
 react-is@^16.3.1:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.4.1.tgz#d624c4650d2c65dbd52c72622bbf389435d9776e"
+
+react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
 react-router-dom@^4.3.1:
   version "4.3.1"
@@ -5871,6 +5897,17 @@ readdirp@^2.0.0:
     minimatch "^3.0.2"
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
+
+recompose@^0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.27.1.tgz#1a49e931f183634516633bbb4f4edbfd3f38a7ba"
+  dependencies:
+    babel-runtime "^6.26.0"
+    change-emitter "^0.1.2"
+    fbjs "^0.8.1"
+    hoist-non-react-statics "^2.3.1"
+    react-lifecycles-compat "^3.0.2"
+    symbol-observable "^1.0.4"
 
 recursive-readdir@2.2.1:
   version "2.2.1"
@@ -6701,6 +6738,10 @@ sw-toolbox@^3.4.0:
   dependencies:
     path-to-regexp "^1.0.1"
     serviceworker-cache-polyfill "^4.0.0"
+
+symbol-observable@^1.0.4:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
 
 symbol-tree@^3.2.1:
   version "3.2.2"
