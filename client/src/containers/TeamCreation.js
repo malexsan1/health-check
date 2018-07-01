@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { css } from 'emotion'
+import { css, cx } from 'emotion'
 import { Query } from 'react-apollo'
 import arrayMutators from 'final-form-arrays'
 import { FieldArray } from 'react-final-form-arrays'
@@ -71,17 +71,17 @@ class TeamCreation extends Component {
                               {({ input }) => {
                                 return (
                                   <Checkbox
-                                    key={t.id}
                                     checked={input.value}
                                     onChange={(e, { checked }) =>
                                       input.onChange(checked)
                                     }
                                     as={({ onChange }) => (
                                       <Card
-                                        key={t.id}
                                         onClick={onChange}
-                                        className={topicCard}
-                                        color={input.value ? 'blue' : null}
+                                        className={cx(
+                                          topicCard,
+                                          input.value && selectedTopic,
+                                        )}
                                       >
                                         <Image
                                           src={t.icon}
@@ -210,6 +210,10 @@ const topicCard = css`
   align-items: center;
   display: flex;
   flex-direction: column;
+`
+
+const selectedTopic = css`
+  background-color: rgba(33, 133, 208, 0.2) !important;
 `
 
 const topicImage = css`
