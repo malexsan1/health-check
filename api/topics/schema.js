@@ -2,7 +2,7 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
   type Topic {
-    _id: String!
+    id: String!
     name: String!
     bestCase: String
     worstCase: String

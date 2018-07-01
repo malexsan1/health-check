@@ -2,13 +2,14 @@ const { gql } = require('apollo-server')
 
 module.exports = gql`
   type Team {
-    _id: String!
+    id: String!
     name: String!
     users: [User]
     topics: [String]
   }
 
   type User {
+    id: String
     name: String
     email: String
   }
@@ -20,6 +21,7 @@ module.exports = gql`
   }
 
   input UserInput {
+    id: String
     name: String
     email: String
   }

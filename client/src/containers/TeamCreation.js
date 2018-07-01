@@ -24,7 +24,7 @@ class TeamCreation extends Component {
   }
 
   getFormInitialValues = (topics = []) => {
-    const t = topics.reduce((acc, el) => ({ ...acc, [el._id]: false }), {})
+    const t = topics.reduce((acc, el) => ({ ...acc, [el.id]: false }), {})
     return {
       ...t,
       team: '',
@@ -67,7 +67,7 @@ class TeamCreation extends Component {
                       <Card.Group centered itemsPerRow={3}>
                         {data.topics &&
                           data.topics.map(t => (
-                            <Field key={t._id} name={t._id}>
+                            <Field key={t.id} name={t.id}>
                               {({ input }) => {
                                 return (
                                   <Checkbox
