@@ -1,29 +1,45 @@
-import React, { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Query } from 'react-apollo'
 import { Link } from 'react-router-dom'
-import { Button, Header, List } from 'semantic-ui-react'
+import { Button, Header, Card, Divider } from 'semantic-ui-react'
 
-const teams = [
-  { id: 'team1', name: 'Team 1' },
-  { id: 'team2', name: 'Team 2' },
-  { id: 'team3', name: 'Team 3' },
-]
+import * as teamsGQL from '../graphql/teams'
 
-const MainDashboard = () => (
-  <Fragment>
-    <Header as="h1">Main dashboard</Header>
-    <Button primary as={Link} to="/create-team">
-      Create new team
-    </Button>
+class MainDashboard extends Component {
+  goToTeam = teamId => () => {
+    this.props.history.push(`/team/${teamId}`)
+  }
 
-    <Header as="h3">Teams</Header>
-    <List horizontal>
-      {teams.map(t => (
-        <List.Item key={t.id} as={Link} to={`/team/${t.id}`}>
-          {t.name}
-        </List.Item>
-      ))}
-    </List>
-  </Fragment>
-)
+  render() {
+    return (
+      <Fragment>
+        <Header as="h1">Main dashboard</Header>
+        <Divider />
+        <Button primary as={Link} to="/create-team">
+          Create new team
+        </Button>
+
+        <Header as="h3">Teams</Header>
+        <Query query={teamsGQL.GET_TEAMS}>
+          {({ data, loading }) =>
+            loading ? (
+              <span>loading...</span>
+            ) : (
+              <Card.Group itemsPerRow={4}>
+                {data.teams.map(team => (
+                  <Card key={team.id} onClick={this.goToTeam(team.id)}>
+                    <Card.Content>
+                      <Card.Header>{team.name}</Card.Header>
+                    </Card.Content>
+                  </Card>
+                ))}
+              </Card.Group>
+            )
+          }
+        </Query>
+      </Fragment>
+    )
+  }
+}
 
 export default MainDashboard

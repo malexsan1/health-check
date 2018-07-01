@@ -2,9 +2,17 @@ const uuid = require('uuid')
 
 module.exports = {
   Query: {
+    team: async (obj, { teamId }, { Team }) => {
+      const team = await Team.findOne({ _id: teamId })
+      return team
+    },
     teams: async (obj, args, { Team }) => {
       const teams = await Team.find()
       return teams
+    },
+    teamForHealthCheck: async (obj, { teamId }, { Team }) => {
+      const team = await Team.findOne({ _id: teamId })
+      return team
     },
   },
   Mutation: {
@@ -16,6 +24,16 @@ module.exports = {
       }
       const newTeam = new Team(team)
       return await newTeam.save()
+    },
+  },
+  HealthCheckTeam: {
+    topics: async ({ topics }, args, { Topic }) => {
+      const t = await Topic.find({
+        _id: {
+          $in: topics,
+        },
+      })
+      return t
     },
   },
 }

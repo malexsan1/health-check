@@ -11,6 +11,7 @@ import {
   Image,
   Header,
   Button,
+  Divider,
   Checkbox,
 } from 'semantic-ui-react'
 
@@ -47,9 +48,14 @@ class TeamCreation extends Component {
   }
 
   render() {
+    const { goBack } = this.props.history
     return (
       <Fragment>
-        <Header as="h1">Create team</Header>
+        <Header as="h1">
+          <Icon name="arrow left" onClick={goBack} />
+          <Header.Content>Create team</Header.Content>
+        </Header>
+        <Divider />
         <Query query={topicsGQL.GET_TOPICS}>
           {({ data, loading }) => {
             return loading ? (

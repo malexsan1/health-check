@@ -8,6 +8,13 @@ module.exports = gql`
     topics: [String]
   }
 
+  type HealthCheckTeam {
+    id: String!
+    name: String!
+    users: [User]
+    topics: [Topic]
+  }
+
   type User {
     id: String
     name: String
@@ -29,6 +36,7 @@ module.exports = gql`
   extend type Query {
     teams: [Team]
     team(teamId: String!): Team
+    teamForHealthCheck(teamId: String!): HealthCheckTeam
   }
 
   extend type Mutation {
