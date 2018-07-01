@@ -9,7 +9,6 @@ module.exports = {
   },
   Mutation: {
     addTeam: async (obj, { team }, { Team }) => {
-      console.log(team)
       if (team.users) {
         team.users.forEach(user => {
           user.id = uuid.v4()
