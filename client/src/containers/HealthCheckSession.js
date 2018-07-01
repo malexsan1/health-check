@@ -22,7 +22,11 @@ const HealthCheckSession = ({
         return loading ? (
           <span>loading...</span>
         ) : (
-          <HealthCheckWizard {...data.teamForHealthCheck} />
+          <HealthCheckWizard
+            teamId={teamId}
+            goBack={history.goBack}
+            {...data.teamForHealthCheck}
+          />
         )
       }}
     </Query>

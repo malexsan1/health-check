@@ -1,9 +1,32 @@
 import React, { Component } from 'react'
 import { css } from 'emotion'
 import styled from 'styled-components'
+import { Mutation } from 'react-apollo'
 import { Form as FinalForm, Field } from 'react-final-form'
-import { Container, Item, Icon, Button } from 'semantic-ui-react'
+import { Container, Item, Icon, Button, Divider } from 'semantic-ui-react'
 
+import * as sessionGQL from '../graphql/sessions'
+
+const parseSessionValues = (values, teamId) => {
+  const topics = Object.entries(values).reduce(
+    (acc, [topicId, el]) => [
+      ...acc,
+      {
+        ...el,
+        topicId,
+        votes: Object.entries(el.votes).map(([userId, value]) => ({
+          userId,
+          value,
+        })),
+      },
+    ],
+    [],
+  )
+  return {
+    teamId,
+    topics,
+  }
+}
 class HealthCheckWizard extends Component {
   state = {
     step: 0,
@@ -22,6 +45,12 @@ class HealthCheckWizard extends Component {
     }))
   }
 
+  submitVotingSession = mutateFn => values => {
+    const { teamId, goBack } = this.props
+    const votingSession = parseSessionValues(values, teamId)
+    mutateFn({ variables: { session: votingSession } }).then(goBack)
+  }
+
   render() {
     const {
       props: { topics, users },
@@ -30,74 +59,154 @@ class HealthCheckWizard extends Component {
     const t = topics[step]
     return (
       <Container className={container}>
-        <Item>
+        <Item className={missionItem}>
           <Item.Image src={t.icon} size="tiny" />
           <Item.Content className={iconContent}>
             <Item.Header>{t.name}</Item.Header>
           </Item.Content>
         </Item>
 
-        <FinalForm onSubmit={values => console.log('form values -> ', values)}>
-          {({ handleSubmit }) => {
-            return (
-              <WizardContainer onSubmit={handleSubmit}>
-                <Icon
-                  size="big"
-                  name="arrow left"
-                  disabled={step === 0}
-                  onClick={this.prevStep}
-                />
-                <CustomList>
-                  {users.map(u => (
-                    <ListRow key={u.id}>
-                      <ListUser>{u.name}</ListUser>
-                      <Ratings>
-                        <Field name={`${t.id}.${u.id}`}>
-                          {({ input: { onChange, value } }) => (
-                            <Icon
-                              size="big"
-                              name="frown outline"
-                              onClick={() => onChange(-1)}
-                              color={value === -1 ? 'red' : null}
-                            />
-                          )}
-                        </Field>
-                        <Field name={`${t.id}.${u.id}`}>
-                          {({ input: { onChange, value } }) => (
-                            <Icon
-                              size="big"
-                              name="meh outline"
-                              onClick={() => onChange(0)}
-                              color={value === 0 ? 'yellow' : null}
-                            />
-                          )}
-                        </Field>
-                        <Field name={`${t.id}.${u.id}`}>
-                          {({ input: { onChange, value } }) => (
-                            <Icon
-                              size="big"
-                              name="smile outline"
-                              onClick={() => onChange(1)}
-                              color={value === 1 ? 'green' : null}
-                            />
-                          )}
-                        </Field>
-                      </Ratings>
-                    </ListRow>
-                  ))}
-                  <Button
-                    primary
-                    type="submit"
-                    // disabled={step !== topics.length - 1}
-                  >
-                    Submit
-                  </Button>
-                </CustomList>
-                <Icon disabled={step === topics.length - 1} size="big" name="arrow right" onClick={this.nextStep} />
-              </WizardContainer>
-            )
-          }}
-        </FinalForm>
+        <Mutation mutation={sessionGQL.SUBMIT_SESSION_VOTE}>
+          {mutateFn => (
+            <FinalForm onSubmit={this.submitVotingSession(mutateFn)}>
+              {({ handleSubmit }) => {
+                return (
+                  <WizardContainer onSubmit={handleSubmit}>
+                    <Icon
+                      size="big"
+                      name="arrow left"
+                      disabled={step === 0}
+                      onClick={this.prevStep}
+                    />
+                    <CustomList>
+                      <ListRow>
+                        <ListUser>Overall rating</ListUser>
+                        <Ratings>
+                          <Field name={`${t.id}.overall`}>
+                            {({ input: { onChange, value } }) => (
+                              <Icon
+                                size="large"
+                                name="frown outline"
+                                onClick={() => onChange(-1)}
+                                color={value === -1 ? 'red' : null}
+                              />
+                            )}
+                          </Field>
+                          <Field name={`${t.id}.overall`}>
+                            {({ input: { onChange, value } }) => (
+                              <Icon
+                                size="large"
+                                name="meh outline"
+                                onClick={() => onChange(0)}
+                                color={value === 0 ? 'yellow' : null}
+                              />
+                            )}
+                          </Field>
+                          <Field name={`${t.id}.overall`}>
+                            {({ input: { onChange, value } }) => (
+                              <Icon
+                                size="large"
+                                name="smile outline"
+                                onClick={() => onChange(1)}
+                                color={value === 1 ? 'green' : null}
+                              />
+                            )}
+                          </Field>
+                        </Ratings>
+                      </ListRow>
+                      <ListRow>
+                        <ListUser>Trend</ListUser>
+                        <Ratings>
+                          <Field name={`${t.id}.trend`}>
+                            {({ input: { onChange, value } }) => (
+                              <Icon
+                                size="large"
+                                name="arrow down"
+                                onClick={() => onChange(-1)}
+                                color={value === -1 ? 'red' : null}
+                              />
+                            )}
+                          </Field>
+                          <Field name={`${t.id}.trend`}>
+                            {({ input: { onChange, value } }) => (
+                              <Icon
+                                size="large"
+                                name="arrow right"
+                                onClick={() => onChange(0)}
+                                color={value === 0 ? 'yellow' : null}
+                              />
+                            )}
+                          </Field>
+                          <Field name={`${t.id}.trend`}>
+                            {({ input: { onChange, value } }) => (
+                              <Icon
+                                size="large"
+                                name="arrow up"
+                                onClick={() => onChange(1)}
+                                color={value === 1 ? 'green' : null}
+                              />
+                            )}
+                          </Field>
+                        </Ratings>
+                      </ListRow>
+                      <Divider />
+                      {users.map(u => (
+                        <ListRow key={u.id}>
+                          <ListUser>{u.name}</ListUser>
+                          <Ratings>
+                            <Field name={`${t.id}.votes.${u.id}`}>
+                              {({ input: { onChange, value } }) => (
+                                <Icon
+                                  size="large"
+                                  name="frown outline"
+                                  onClick={() => onChange(-1)}
+                                  color={value === -1 ? 'red' : null}
+                                />
+                              )}
+                            </Field>
+                            <Field name={`${t.id}.votes.${u.id}`}>
+                              {({ input: { onChange, value } }) => (
+                                <Icon
+                                  size="large"
+                                  name="meh outline"
+                                  onClick={() => onChange(0)}
+                                  color={value === 0 ? 'yellow' : null}
+                                />
+                              )}
+                            </Field>
+                            <Field name={`${t.id}.votes.${u.id}`}>
+                              {({ input: { onChange, value } }) => (
+                                <Icon
+                                  size="large"
+                                  name="smile outline"
+                                  onClick={() => onChange(1)}
+                                  color={value === 1 ? 'green' : null}
+                                />
+                              )}
+                            </Field>
+                          </Ratings>
+                        </ListRow>
+                      ))}
+                      <Button
+                        primary
+                        type="submit"
+                        // disabled={step !== topics.length - 1}
+                      >
+                        Submit
+                      </Button>
+                    </CustomList>
+                    <Icon
+                      disabled={step === topics.length - 1}
+                      size="big"
+                      name="arrow right"
+                      onClick={this.nextStep}
+                    />
+                  </WizardContainer>
+                )
+              }}
+            </FinalForm>
+          )}
+        </Mutation>
       </Container>
     )
   }
@@ -133,7 +242,7 @@ const ListUser = styled.div`
   flex: 1;
   display: flex;
   justify-content: flex-end;
-  font-size: 1.6em;
+  font-size: 1.2em;
   font-weight: 500;
 `
 
@@ -142,6 +251,10 @@ const Ratings = styled.div`
   flex: 2;
   display: flex;
   justify-content: space-around;
+`
+
+const missionItem = css`
+  text-align: center;
 `
 
 const container = css`

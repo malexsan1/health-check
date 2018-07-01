@@ -8,6 +8,7 @@ const SessionSchema = new Schema({
     {
       topicId: String,
       trend: Number,
+      overall: Number,
       votes: [
         {
           userId: String,
