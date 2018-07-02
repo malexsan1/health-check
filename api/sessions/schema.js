@@ -12,11 +12,17 @@ module.exports = gql`
     trend: Int
     overall: Int
     votes: [SessionVote]
+    details: TopicDetails
   }
 
   type SessionVote {
     userId: String
     value: Int
+  }
+
+  type TopicDetails {
+      name: String!
+      icon: String!
   }
 
   input SessionVoteInput {
@@ -40,4 +46,9 @@ module.exports = gql`
     submitVote(session: SessionInput): Session
   }
 
+  extend type Query {
+    sessionById(sessionId: String!): Session
+    teamSessions(teamId: String!): [Session]
+    sessions: [Session]
+  }
 `
