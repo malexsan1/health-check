@@ -1,6 +1,10 @@
+const path = require('path')
+const express = require('express')
 const { merge } = require('lodash')
 const mongoose = require('mongoose')
 const { ApolloServer, gql } = require('apollo-server')
+
+const app = express()
 
 const teams = require('./api/teams')
 const topics = require('./api/topics')
@@ -54,8 +58,14 @@ const server = new ApolloServer(
   ),
 )
 
-server
-  .listen({
-    port: PORT,
+if (isProduction) {
+  app.use(express.static(path.join(__dirname, 'client/build')))
+
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
   })
-  .then(({ url }) => console.log(`Server ready on ${url}...`))
+}
+
+server.applyMiddleware({ app })
+
+app.listen(PORT, () => console.log(`Server ready on ${server.graphqlPath}`))
