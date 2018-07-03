@@ -8,6 +8,7 @@ const sessions = require('./api/sessions')
 
 const models = require('./api/models')
 
+const PORT = process.env.PORT || 4000
 const dbURL = `mongodb://admin:hindawi2018@ds121251.mlab.com:21251/health-check`
 mongoose.connect(dbURL).catch(console.log)
 
@@ -37,4 +38,8 @@ const server = new ApolloServer({
   },
 })
 
-server.listen().then(({ url }) => console.log(`Server ready on ${url}...`))
+server
+  .listen({
+    port: PORT,
+  })
+  .then(({ url }) => console.log(`Server ready on ${url}...`))

@@ -4,10 +4,13 @@
   "scripts": {
     "client": "cd client && yarn start",
     "server": "nodemon --ignore client/ server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
     "apollo-server": "^2.0.0-beta.5",
+    "babel-cli": "^6.26.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "lodash": "^4.17.10",
