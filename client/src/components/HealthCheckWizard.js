@@ -46,9 +46,17 @@ class HealthCheckWizard extends Component {
   }
 
   submitVotingSession = mutateFn => values => {
-    const { teamId, goBack } = this.props
+    const { teamId, goTo } = this.props
     const votingSession = parseSessionValues(values, teamId)
-    mutateFn({ variables: { session: votingSession } }).then(goBack)
+    mutateFn({ variables: { session: votingSession } }).then(
+      ({
+        data: {
+          submitVote: { id: sessionId },
+        },
+      }) => {
+        goTo(`/team/${teamId}/session/${sessionId}`)
+      },
+    )
   }
 
   render() {

@@ -24,7 +24,7 @@ const HealthCheckSession = ({
         ) : (
           <HealthCheckWizard
             teamId={teamId}
-            goBack={history.goBack}
+            goTo={history.push}
             {...data.teamForHealthCheck}
           />
         )

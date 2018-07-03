@@ -3,6 +3,7 @@ const { gql } = require('apollo-server')
 module.exports = gql`
   type Session {
     id: String!
+    created: String
     teamId: String
     topics: [SessionTopic]
   }

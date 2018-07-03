@@ -10,6 +10,7 @@
     "emotion": "^9.2.4",
     "final-form": "^4.8.3",
     "final-form-arrays": "^1.0.4",
+    "moment": "^2.22.2",
     "react": "^16.4.1",
     "react-apollo": "^2.1.8",
     "react-dom": "^16.4.1",

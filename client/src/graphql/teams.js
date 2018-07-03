@@ -11,6 +11,36 @@ export const GET_TEAM = gql`
       }
       topics
     }
+
+    sessions {
+      id
+      teamId
+    }
+  }
+`
+
+export const GET_TEAM_WITH_SESSIONS = gql`
+  query teamWithSessions($teamId: String!) {
+    team(teamId: $teamId) {
+      id
+      name
+    }
+
+    teamSessions(teamId: $teamId) {
+      id
+      created
+      topics {
+        trend
+        overall
+        votes {
+          value
+        }
+        details {
+          name
+          icon
+        }
+      }
+    }
   }
 `
 

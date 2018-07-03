@@ -17,3 +17,24 @@ export const SUBMIT_SESSION_VOTE = gql`
     }
   }
 `
+
+export const GET_SESSION = gql`
+  query sessionById($sessionId: String!) {
+    sessionById(sessionId: $sessionId) {
+      id
+      created
+      topics {
+        topicId
+        trend
+        overall
+        details {
+          name
+          icon
+        }
+        votes {
+          value
+        }
+      }
+    }
+  }
+`

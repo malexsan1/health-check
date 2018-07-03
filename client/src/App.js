@@ -5,6 +5,7 @@ import { Container } from 'semantic-ui-react'
 
 import {
   TeamCreation,
+  SessionReport,
   MainDashboard,
   TeamDashboard,
   HealthCheckSession,
@@ -16,6 +17,7 @@ const App = () => (
     <Route path="/create-team" component={TeamCreation} />
     <Route path="/team/:teamId" component={TeamDashboard} />
     <Route path="/health-check/:teamId" component={HealthCheckSession} />
+    {/* <Route path="/team/:teamId/session/:sessionId" component={SessionReport} /> */}
   </Container>
 )
 
