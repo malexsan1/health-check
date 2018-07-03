@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const { merge } = require('lodash')
 const mongoose = require('mongoose')
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql } = require('apollo-server-express')
 
 const app = express()
 

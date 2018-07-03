@@ -266,7 +266,7 @@ apollo-server-errors@^2.0.0-rc.6:
   version "2.0.0-rc.6"
   resolved "https://registry.yarnpkg.com/apollo-server-errors/-/apollo-server-errors-2.0.0-rc.6.tgz#28bc420ddda040073b49c68c8604ae7bb9180ed6"
 
-apollo-server-express@^2.0.0-rc.5:
+apollo-server-express@^2.0.0-rc.5, apollo-server-express@^2.0.0-rc.6:
   version "2.0.0-rc.6"
   resolved "https://registry.yarnpkg.com/apollo-server-express/-/apollo-server-express-2.0.0-rc.6.tgz#f461dff0832da4932bd7ebfd69f7d5feab3eaa46"
   dependencies:
