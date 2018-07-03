@@ -31,6 +31,9 @@ const resolvers = merge(
 )
 
 const server = new ApolloServer({
+  engine: {
+    apiKey: 'service:malexsan1-2532:Tb5Z2bsJ5RtUmgcQKPkl-A',
+  },
   typeDefs,
   resolvers,
   context: {
