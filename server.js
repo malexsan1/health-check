@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 4000
 const dbURL = `mongodb://admin:hindawi2018@ds121251.mlab.com:21251/health-check`
 mongoose.connect(dbURL).catch(console.log)
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const typeDefs = [
   gql`
     type Query
@@ -30,16 +32,27 @@ const resolvers = merge(
   sessions.resolvers,
 )
 
-const server = new ApolloServer({
-  engine: {
-    apiKey: process.env.ENGINE_API_KEY,
-  },
+const serverConfig = {
   typeDefs,
   resolvers,
   context: {
     ...models,
   },
-})
+}
+
+const server = new ApolloServer(
+  merge(
+    {},
+    serverConfig,
+    isProduction
+      ? {
+          engine: {
+            apiKey: process.env.ENGINE_API_KEY,
+          },
+        }
+      : {},
+  ),
+)
 
 server
   .listen({
