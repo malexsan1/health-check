@@ -77,7 +77,7 @@ const OverallRating = ({ rating }) => {
       : rating === 0
         ? { name: 'meh outline', color: 'yellow' }
         : { name: 'smile outline', color: 'green' }
-  return <Icon name={icon.name} size="big" color={icon.color} />
+  return <Icon name="circle" size="big" color={icon.color} />
 }
 
 const Trend = ({ trend }) => {
@@ -87,13 +87,13 @@ const Trend = ({ trend }) => {
       : trend === 0
         ? { name: 'arrow right', color: 'yellow' }
         : { name: 'arrow up', color: 'green' }
-  return <Icon name={icon.name} size="big" color={icon.color} />
+  return <Icon name={icon.name} size="big" />
 }
 
 export default SessionReport
 
 // #region styles
 const ratingText = css`
-  font-size: 1.6em;
+  font-size: 1.4em;
 `
 // #endregion

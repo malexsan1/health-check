@@ -3,7 +3,7 @@ import { css } from 'emotion'
 import styled from 'styled-components'
 import { Mutation } from 'react-apollo'
 import { Form as FinalForm, Field } from 'react-final-form'
-import { Container, Item, Icon, Button, Divider } from 'semantic-ui-react'
+import { Container, Item, Icon, Button, Divider, Grid } from 'semantic-ui-react'
 
 import * as sessionGQL from '../graphql/sessions'
 
@@ -67,12 +67,27 @@ class HealthCheckWizard extends Component {
     const t = topics[step]
     return (
       <Container className={container}>
-        <Item className={missionItem}>
-          <Item.Image src={t.icon} size="tiny" />
-          <Item.Content className={iconContent}>
-            <Item.Header>{t.name}</Item.Header>
-          </Item.Content>
-        </Item>
+        <Grid columns={3}>
+          <Grid.Column
+            textAlign="right"
+            verticalAlign="middle"
+            className={worstCaseText}
+          >
+            {t.worstCase}
+          </Grid.Column>
+          <Grid.Column>
+            <Item className={missionItem}>
+              <Item.Image src={t.icon} size="small" />
+              <Item.Content className={iconContent}>
+                <Item.Header>{t.name}</Item.Header>
+              </Item.Content>
+            </Item>
+          </Grid.Column>
+          <Grid.Column verticalAlign="middle" className={bestCaseText}>
+            {t.bestCase}
+          </Grid.Column>
+        </Grid>
+        <Divider hidden />
 
         <Mutation mutation={sessionGQL.SUBMIT_SESSION_VOTE}>
           {mutateFn => (
@@ -94,9 +109,9 @@ class HealthCheckWizard extends Component {
                             {({ input: { onChange, value } }) => (
                               <Icon
                                 size="large"
-                                name="frown outline"
                                 onClick={() => onChange(-1)}
                                 color={value === -1 ? 'red' : null}
+                                name={value === -1 ? 'circle' : 'frown outline'}
                               />
                             )}
                           </Field>
@@ -104,9 +119,9 @@ class HealthCheckWizard extends Component {
                             {({ input: { onChange, value } }) => (
                               <Icon
                                 size="large"
-                                name="meh outline"
                                 onClick={() => onChange(0)}
                                 color={value === 0 ? 'yellow' : null}
+                                name={value === 0 ? 'circle' : 'meh outline'}
                               />
                             )}
                           </Field>
@@ -114,9 +129,9 @@ class HealthCheckWizard extends Component {
                             {({ input: { onChange, value } }) => (
                               <Icon
                                 size="large"
-                                name="smile outline"
                                 onClick={() => onChange(1)}
                                 color={value === 1 ? 'green' : null}
+                                name={value === 1 ? 'circle' : 'smile outline'}
                               />
                             )}
                           </Field>
@@ -198,7 +213,7 @@ class HealthCheckWizard extends Component {
                       <Button
                         primary
                         type="submit"
-                        // disabled={step !== topics.length - 1}
+                        disabled={step !== topics.length - 1}
                       >
                         Submit
                       </Button>
@@ -223,6 +238,18 @@ class HealthCheckWizard extends Component {
 export default HealthCheckWizard
 
 // #region styles
+const worstCaseText = css`
+  border-right: 5px solid red;
+  font-size: 1.2em;
+  padding-right: 1em;
+`
+
+const bestCaseText = css`
+  border-left: 5px solid green;
+  font-size: 1.2em;
+  padding-left: 1em;
+`
+
 const WizardContainer = styled.form`
   align-self: stretch;
   align-items: center;
@@ -272,7 +299,7 @@ const container = css`
 `
 
 const iconContent = css`
-  font-size: 1.2em;
+  font-size: 1.4em;
   font-weight: 600;
   text-align: center;
 `
