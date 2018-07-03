@@ -4,7 +4,7 @@ import { last } from 'lodash'
 import { cx, css } from 'emotion'
 import { Query } from 'react-apollo'
 import { withState } from 'recompose'
-import { Route, withRouter } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { Header, Icon, Button, Divider, Card } from 'semantic-ui-react'
 
 import { SessionReport } from './'
