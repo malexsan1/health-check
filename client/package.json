@@ -6,6 +6,7 @@
   "dependencies": {
     "apollo-client-preset": "^1.0.8",
     "apollo-link": "^1.2.2",
+    "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
     "emotion": "^9.2.4",
     "final-form": "^4.8.3",

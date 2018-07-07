@@ -6,6 +6,7 @@ const { ApolloServer, gql } = require('apollo-server')
 
 const app = express()
 
+const auth = require('./api/auth')
 const teams = require('./api/teams')
 const topics = require('./api/topics')
 const sessions = require('./api/sessions')
@@ -24,6 +25,7 @@ const typeDefs = [
     type Mutation
 
   `,
+  auth.schema,
   teams.schema,
   topics.schema,
   sessions.schema,
@@ -31,6 +33,7 @@ const typeDefs = [
 
 const resolvers = merge(
   {},
+  auth.resolvers,
   teams.resolvers,
   topics.resolvers,
   sessions.resolvers,

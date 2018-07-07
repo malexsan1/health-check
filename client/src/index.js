@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ApolloProvider } from 'react-apollo'
+import { setContext } from 'apollo-link-context'
 import { createHttpLink } from 'apollo-link-http'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { ApolloClient, InMemoryCache } from 'apollo-client-preset'
@@ -12,11 +13,23 @@ const uri =
     ? `https://ts-health-check.herokuapp.com/graphql`
     : `http://localhost:4000/graphql`
 
+const httpLink = createHttpLink({
+  uri,
+})
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token')
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  }
+})
+
 const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  link: createHttpLink({
-    uri,
-  }),
+  link: authLink.concat(httpLink),
 })
 
 ReactDOM.render(
