@@ -15,9 +15,9 @@ const sessions = require('./api/sessions')
 const models = require('./api/models')
 
 const PORT = process.env.PORT || 4000
-const DB_NAME = provess.env.DB_NAME
-const DB_USER = provess.env.DB_USER
-const DB_PASSWORD = provess.env.DB_PASSWORD
+const DB_NAME = process.env.DB_NAME
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = process.env.DB_PASSWORD
 
 console.log('Connect with: ', DB_NAME, DB_USER, DB_PASSWORD)
 
