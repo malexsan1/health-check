@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const { merge } = require('lodash')
@@ -15,7 +15,11 @@ const sessions = require('./api/sessions')
 const models = require('./api/models')
 
 const PORT = process.env.PORT || 4000
-const { DB_USER, DB_PASSWORD, DB_NAME } = process.env
+const DB_NAME = provess.env.DB_NAME
+const DB_USER = provess.env.DB_USER
+const DB_PASSWORD = provess.env.DB_PASSWORD
+
+console.log('Connect with: ', DB_NAME, DB_USER, DB_PASSWORD)
 
 const dbURL = `mongodb://${DB_USER}:${DB_PASSWORD}@ds121251.mlab.com:21251/${DB_NAME}`
 mongoose.connect(dbURL).catch(console.log)
