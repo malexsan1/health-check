@@ -1,3 +1,4 @@
+require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const { merge } = require('lodash')
@@ -14,7 +15,9 @@ const sessions = require('./api/sessions')
 const models = require('./api/models')
 
 const PORT = process.env.PORT || 4000
-const dbURL = `mongodb://admin:hindawi2018@ds121251.mlab.com:21251/health-check`
+const { DB_USER, DB_PASSWORD, DB_NAME } = process.env
+
+const dbURL = `mongodb://${DB_USER}:${DB_PASSWORD}@ds121251.mlab.com:21251/${DB_NAME}`
 mongoose.connect(dbURL).catch(console.log)
 
 const isProduction = process.env.NODE_ENV === 'production'

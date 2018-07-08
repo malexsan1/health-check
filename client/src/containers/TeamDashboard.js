@@ -26,7 +26,7 @@ const TeamDashboard = ({
       ) : (
         <Fragment>
           <Header as="h3">
-            <Icon name="arrow left" onClick={() => history.push('/')} />
+            <Icon name="arrow left" onClick={() => history.push('/dashboard')} />
             <Header.Content>{`${team.name} dashboard`}</Header.Content>
           </Header>
           <Divider />
