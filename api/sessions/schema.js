@@ -12,6 +12,7 @@ module.exports = gql`
     topicId: String!
     trend: Int
     overall: Int
+    comments: String
     votes: [SessionVote]
     details: TopicDetails
   }
@@ -22,8 +23,8 @@ module.exports = gql`
   }
 
   type TopicDetails {
-      name: String!
-      icon: String!
+    name: String!
+    icon: String!
   }
 
   input SessionVoteInput {
@@ -35,6 +36,7 @@ module.exports = gql`
     topicId: String!
     trend: Int
     overall: Int
+    comments: String
     votes: [SessionVoteInput]
   }
 
@@ -52,4 +54,5 @@ module.exports = gql`
     teamSessions(teamId: String!): [Session]
     sessions: [Session]
   }
+
 `

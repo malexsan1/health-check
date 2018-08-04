@@ -26,6 +26,7 @@ export const GET_SESSION = gql`
       topics {
         topicId
         trend
+        comments
         overall
         details {
           name

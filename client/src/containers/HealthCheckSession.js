@@ -18,14 +18,15 @@ const HealthCheckSession = ({
     </Header>
     <Divider />
     <Query query={teamsGQL.GET_HEALTH_TEAM} variables={{ teamId }}>
-      {({ data, loading }) => {
+      {({ data: { teamForHealthCheck }, loading }) => {
         return loading ? (
           <span>loading...</span>
         ) : (
           <HealthCheckWizard
             teamId={teamId}
             goTo={history.push}
-            {...data.teamForHealthCheck}
+            maxSteps={teamForHealthCheck.topics.length - 1}
+            {...teamForHealthCheck}
           />
         )
       }}
