@@ -18,6 +18,7 @@ module.exports = gql`
 
   extend type Query {
     topics: [Topic]
+    teamTopics(teamId: String): [Topic]
   }
 
   extend type Mutation {

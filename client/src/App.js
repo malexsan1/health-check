@@ -13,9 +13,9 @@ import {
 
 const App = () => (
   <Container className={containerMargin}>
-    <Route path="/" component={Auth} />
+    {/* <Route path="/" component={Auth} /> */}
 
-    <Route exact path="/dashboard" component={MainDashboard} />
+    <Route exact path="/" component={MainDashboard} />
     <Route path="/create-team" component={TeamCreation} />
     <Route path="/team/:teamId" component={TeamDashboard} />
     <Route path="/health-check/:teamId" component={HealthCheckSession} />

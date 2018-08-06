@@ -5,7 +5,7 @@ import { cx, css } from 'emotion'
 import { Query } from 'react-apollo'
 import { withState } from 'recompose'
 import { Route } from 'react-router-dom'
-import { Header, Icon, Button, Divider, Card } from 'semantic-ui-react'
+import { Header, Icon, Button, Divider, Card, Image } from 'semantic-ui-react'
 
 import { SessionReport } from './'
 
@@ -20,13 +20,13 @@ const TeamDashboard = ({
   },
 }) => (
   <Query query={teamsGQL.GET_TEAM_WITH_SESSIONS} variables={{ teamId }}>
-    {({ data: { team, teamSessions }, loading }) =>
-      loading ? (
+    {({ data: { team, teamSessions = [], teamTopics = [] }, loading }) => {
+      return loading ? (
         <span>Loading...</span>
       ) : (
         <Fragment>
           <Header as="h3">
-            <Icon name="arrow left" onClick={() => history.push('/dashboard')} />
+            <Icon name="arrow left" onClick={() => history.push('/')} />
             <Header.Content>{`${team.name} dashboard`}</Header.Content>
           </Header>
           <Divider />
@@ -39,6 +39,9 @@ const TeamDashboard = ({
             onClick={() => history.push(`/health-check/${teamId}`)}
           />
           <Divider hidden />
+          <Header as="h2">
+            <Header.Content>Previous sessions reports</Header.Content>
+          </Header>
           <Card.Group itemsPerRow={4}>
             {teamSessions.map((session, index) => (
               <Card
@@ -63,9 +66,25 @@ const TeamDashboard = ({
             path="/team/:teamId/session/:sessionId"
             component={SessionReport}
           />
+          <Divider hidden />
+          <Header as="h2">
+            <Header.Content>Reports by topic</Header.Content>
+          </Header>
+          <Card.Group itemsPerRow={6}>
+            {teamTopics.map(topic => (
+              <Card key={topic.id} onClick={() => console.log(topic)}>
+                <Card.Content className={topicContent}>
+                  <Card.Content className={topicCard}>
+                    <Image src={topic.icon} size="small" />
+                    {topic.name}
+                  </Card.Content>
+                </Card.Content>
+              </Card>
+            ))}
+          </Card.Group>
         </Fragment>
       )
-    }
+    }}
   </Query>
 )
 
@@ -76,5 +95,14 @@ export default withState('selectedSession', 'setSession', ({ location }) =>
 // #region styles
 const selected = css`
   background-color: rgba(33, 133, 208, 0.2) !important;
+`
+
+const topicContent = css`
+  padding: 0;
+`
+
+const topicCard = css`
+  color: rgba(0, 0, 0, 0.85);
+  text-align: center;
 `
 // #endregion

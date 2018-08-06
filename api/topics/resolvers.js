@@ -4,6 +4,14 @@ module.exports = {
       const topics = await Topic.find()
       return topics
     },
+    teamTopics: async (obj, { teamId }, { Topic, Team }) => {
+      const { topics: teamTopics } = await Team.findOne({ _id: teamId })
+      return await Topic.find({
+        _id: {
+          $in: teamTopics,
+        },
+      })
+    },
   },
   Mutation: {
     addTopic: async (obj, { topic }, { Topic }) => {

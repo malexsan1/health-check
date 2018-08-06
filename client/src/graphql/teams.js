@@ -41,6 +41,12 @@ export const GET_TEAM_WITH_SESSIONS = gql`
         }
       }
     }
+
+    teamTopics(teamId: $teamId) {
+      id
+      name
+      icon
+    }
   }
 `
 
