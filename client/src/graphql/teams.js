@@ -30,6 +30,7 @@ export const GET_TEAM_WITH_SESSIONS = gql`
       id
       created
       topics {
+        topicId
         trend
         overall
         votes {

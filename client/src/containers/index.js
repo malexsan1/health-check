@@ -1,4 +1,5 @@
 export { default as Auth } from './Auth'
+export { default as TopicReports } from './TopicReports'
 export { default as TeamCreation } from './TeamCreation'
 export { default as SessionReport } from './SessionReport'
 export { default as MainDashboard } from './MainDashboard'

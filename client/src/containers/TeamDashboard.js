@@ -5,9 +5,9 @@ import { cx, css } from 'emotion'
 import { Query } from 'react-apollo'
 import { withState } from 'recompose'
 import { Route } from 'react-router-dom'
-import { Header, Icon, Button, Divider, Card, Image } from 'semantic-ui-react'
+import { Header, Icon, Button, Divider, Card } from 'semantic-ui-react'
 
-import { SessionReport } from './'
+import { SessionReport, TopicReports } from './'
 
 import * as teamsGQL from '../graphql/teams'
 
@@ -70,18 +70,8 @@ const TeamDashboard = ({
           <Header as="h2">
             <Header.Content>Reports by topic</Header.Content>
           </Header>
-          <Card.Group itemsPerRow={6}>
-            {teamTopics.map(topic => (
-              <Card key={topic.id} onClick={() => console.log(topic)}>
-                <Card.Content className={topicContent}>
-                  <Card.Content className={topicCard}>
-                    <Image src={topic.icon} size="small" />
-                    {topic.name}
-                  </Card.Content>
-                </Card.Content>
-              </Card>
-            ))}
-          </Card.Group>
+
+          <TopicReports teamId={teamId} />
         </Fragment>
       )
     }}
@@ -95,14 +85,5 @@ export default withState('selectedSession', 'setSession', ({ location }) =>
 // #region styles
 const selected = css`
   background-color: rgba(33, 133, 208, 0.2) !important;
-`
-
-const topicContent = css`
-  padding: 0;
-`
-
-const topicCard = css`
-  color: rgba(0, 0, 0, 0.85);
-  text-align: center;
 `
 // #endregion
