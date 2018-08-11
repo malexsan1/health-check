@@ -1,12 +1,11 @@
 import React, { Fragment } from 'react'
-import moment from 'moment'
 import { last } from 'lodash'
-import { cx, css } from 'emotion'
 import { Query } from 'react-apollo'
-import { withState } from 'recompose'
 import { Route } from 'react-router-dom'
-import { Header, Icon, Button, Divider, Card } from 'semantic-ui-react'
+import { compose, withState, withHandlers } from 'recompose'
+import { Header, Icon, Button, Divider } from 'semantic-ui-react'
 
+import { PreviousSessions } from '../components'
 import { SessionReport, TopicReports } from './'
 
 import * as teamsGQL from '../graphql/teams'
@@ -14,6 +13,7 @@ import * as teamsGQL from '../graphql/teams'
 const TeamDashboard = ({
   history,
   setSession,
+  selectSession,
   selectedSession,
   match: {
     params: { teamId },
@@ -39,38 +39,17 @@ const TeamDashboard = ({
             onClick={() => history.push(`/health-check/${teamId}`)}
           />
           <Divider hidden />
-          <Header as="h2">
-            <Header.Content>Previous sessions reports</Header.Content>
-          </Header>
-          <Card.Group itemsPerRow={4}>
-            {teamSessions.map((session, index) => (
-              <Card
-                key={session.id}
-                className={cx(selectedSession === session.id && selected)}
-                onClick={() => {
-                  history.push(`/team/${teamId}/session/${session.id}`)
-                  setSession(session.id)
-                }}
-              >
-                <Card.Content>
-                  <Card.Header>{`Session #${index + 1}`}</Card.Header>
-                  <Card.Content>
-                    {moment(session.created).format(`DD/MM/YYYY`)}
-                  </Card.Content>
-                </Card.Content>
-              </Card>
-            ))}
-          </Card.Group>
+          <PreviousSessions
+            selectSession={selectSession}
+            selectedSession={selectedSession}
+            teamSessions={teamSessions}
+          />
           <Divider hidden />
           <Route
             path="/team/:teamId/session/:sessionId"
             component={SessionReport}
           />
           <Divider hidden />
-          <Header as="h2">
-            <Header.Content>Reports by topic</Header.Content>
-          </Header>
-
           <TopicReports teamId={teamId} />
         </Fragment>
       )
@@ -78,12 +57,23 @@ const TeamDashboard = ({
   </Query>
 )
 
-export default withState('selectedSession', 'setSession', ({ location }) =>
-  last(location.pathname.split('/')),
+export default compose(
+  withState('selectedSession', 'setSession', ({ location }) =>
+    last(location.pathname.split('/')),
+  ),
+  withHandlers({
+    selectSession: ({
+      history,
+      setSession,
+      match: {
+        params: { teamId },
+      },
+    }) => session => () => {
+      history.push(`/team/${teamId}/session/${session.id}`)
+      setSession(session.id)
+    },
+  }),
 )(TeamDashboard)
 
 // #region styles
-const selected = css`
-  background-color: rgba(33, 133, 208, 0.2) !important;
-`
 // #endregion

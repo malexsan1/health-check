@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import moment from 'moment'
 import { Query } from 'react-apollo'
 import styled from 'styled-components'
-import { Image, Icon } from 'semantic-ui-react'
+import { Image, Icon, Header } from 'semantic-ui-react'
 
 import { GET_TEAM_WITH_SESSIONS } from '../graphql/teams'
 
@@ -24,25 +24,34 @@ const TopicReports = ({ teamId }) => (
   <Query query={GET_TEAM_WITH_SESSIONS} variables={{ teamId }}>
     {({ data: { teamSessions = [], teamTopics = [] } }) => {
       return (
-        <Root>
-          <TopicsColumn>
-            <DateBlock />
-            {teamTopics.map(t => <Image key={t.id} src={t.icon} size="tiny" />)}
-          </TopicsColumn>
-          <VotesContainer>
-            {teamSessions.map((session, index, arr) => (
-              <VoteColumn key={`${session.id}-${index}`}>
-                <DateBlock>
-                  <span>{`#${arr.length - index}`}</span>
-                  {moment(session.created).format('DD-MM:HH-mm')}
-                </DateBlock>
-                {session.topics.map(t => (
-                  <VoteIcon key={t.topicId} overall={t.overall} />
+        teamSessions.length > 0 && (
+          <Fragment>
+            <Header as="h2">
+              <Header.Content>Reports by topic</Header.Content>
+            </Header>
+            <Root>
+              <TopicsColumn>
+                <DateBlock />
+                {teamTopics.map(t => (
+                  <Image key={t.id} src={t.icon} size="tiny" />
                 ))}
-              </VoteColumn>
-            ))}
-          </VotesContainer>
-        </Root>
+              </TopicsColumn>
+              <VotesContainer>
+                {teamSessions.map((session, index, arr) => (
+                  <VoteColumn key={`${session.id}-${index}`}>
+                    <DateBlock>
+                      <span>{`#${arr.length - index}`}</span>
+                      {moment(session.created).format('DD-MM:HH-mm')}
+                    </DateBlock>
+                    {session.topics.map(t => (
+                      <VoteIcon key={t.topicId} overall={t.overall} />
+                    ))}
+                  </VoteColumn>
+                ))}
+              </VotesContainer>
+            </Root>
+          </Fragment>
+        )
       )
     }}
   </Query>
