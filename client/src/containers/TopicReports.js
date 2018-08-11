@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
+import { sortBy } from 'lodash'
 import { Query } from 'react-apollo'
 import styled from 'styled-components'
 import { Image, Icon, Header } from 'semantic-ui-react'
@@ -37,17 +38,19 @@ const TopicReports = ({ teamId }) => (
                 ))}
               </TopicsColumn>
               <VotesContainer>
-                {teamSessions.map((session, index, arr) => (
-                  <VoteColumn key={`${session.id}-${index}`}>
-                    <DateBlock>
-                      <span>{`#${arr.length - index}`}</span>
-                      {moment(session.created).format('DD-MM HH:mm:ss')}
-                    </DateBlock>
-                    {session.topics.map(t => (
-                      <VoteIcon key={t.topicId} overall={t.overall} />
-                    ))}
-                  </VoteColumn>
-                ))}
+                {sortBy(teamSessions, 'created')
+                  .reverse()
+                  .map((session, index, arr) => (
+                    <VoteColumn key={`${session.id}-${index}`}>
+                      <DateBlock>
+                        <span>{`#${arr.length - index}`}</span>
+                        {moment(session.created).format('DD-MM HH:mm:ss')}
+                      </DateBlock>
+                      {session.topics.map(t => (
+                        <VoteIcon key={t.topicId} overall={t.overall} />
+                      ))}
+                    </VoteColumn>
+                  ))}
               </VotesContainer>
             </Root>
           </Fragment>

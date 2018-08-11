@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const SessionSchema = new Schema({
-  created: { type: Date, default: Date.now() },
+  created: { type: Date, default: new Date() },
   teamId: String,
   topics: [
     {
