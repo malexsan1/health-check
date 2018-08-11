@@ -1,24 +1,50 @@
 import React from 'react'
+import { css } from 'emotion'
+import Markdown from 'react-markdown'
 import styled from 'styled-components'
-import { Form, TextArea } from 'semantic-ui-react'
 import { Field } from 'react-final-form'
+import { withStateHandlers } from 'recompose'
+import { Button, Form, TextArea } from 'semantic-ui-react'
 
-const Textarea = ({ label = 'Comments', name }) => (
+const Textarea = ({ label = 'Comments', name, preview, togglePreview }) => (
   <Root>
-    <Label>{label}</Label>
+    <Label>
+      <span>{label}</span>
+      <Button basic onClick={togglePreview}>
+        {preview ? 'Show comments' : 'Preview markdown'}
+      </Button>
+    </Label>
     <Field name={name}>
-      {({ input: { value, onChange } }) => (
-        <Form>
-          <TextArea autoHeight onChange={onChange} value={value} />
-        </Form>
-      )}
+      {({ input: { value, onChange } }) =>
+        preview ? (
+          <Markdown className={formCss} source={value} />
+        ) : (
+          <Form className={formCss}>
+            <TextArea autoHeight onChange={onChange} value={value} />
+          </Form>
+        )
+      }
     </Field>
   </Root>
 )
 
-export default Textarea
+export default withStateHandlers(
+  { preview: false },
+  {
+    togglePreview: ({ preview }) => e => {
+      e.preventDefault()
+      return {
+        preview: !preview,
+      }
+    },
+  },
+)(Textarea)
 
 // #region styles
+const formCss = css`
+  flex: 1;
+`
+
 const Root = styled.div`
   display: flex;
   flex-direction: column;
@@ -32,7 +58,7 @@ const Label = styled.div`
   flex: 1;
   font-size: 1.3em;
   font-weight: 600;
-  justify-content: flex-start;
-  margin: 10px 0;
+  justify-content: space-between;
+  margin-bottom: 3px;
 `
 // #endregion

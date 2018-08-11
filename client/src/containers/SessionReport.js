@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react'
-import { css } from 'emotion'
 import { Query } from 'react-apollo'
+import Markdown from 'react-markdown'
+import styled from 'styled-components'
+import { css } from 'emotion'
 import { Table, Icon, Image } from 'semantic-ui-react'
 
 import * as sessionsGQL from '../graphql/sessions'
@@ -18,46 +20,30 @@ const SessionReport = ({
         <Fragment>
           <Table textAlign="center" definition>
             <Table.Header>
-              <Table.HeaderCell />
-              <Table.HeaderCell width="3">
-                <Icon name="frown outline" size="big" color="red" />
-              </Table.HeaderCell>
-              <Table.HeaderCell width="3">
-                <Icon name="meh outline" size="big" color="yellow" />
-              </Table.HeaderCell>
-              <Table.HeaderCell width="3">
-                <Icon name="smile outline" size="big" color="green" />
-              </Table.HeaderCell>
-              <Table.HeaderCell width="3">Overall</Table.HeaderCell>
-              <Table.HeaderCell width="3">Trend</Table.HeaderCell>
+              <Table.HeaderCell width="2" />
+              <Table.HeaderCell width="2">Overall</Table.HeaderCell>
+              <Table.HeaderCell width="2">Trend</Table.HeaderCell>
+              <Table.HeaderCell width="6">Comments</Table.HeaderCell>
             </Table.Header>
 
             <Table.Body>
               {session.topics.map(t => {
-                const votes = t.votes.reduce(
-                  (acc, el) => ({ ...acc, [el.value]: acc[el.value] + 1 }),
-                  {
-                    '-1': 0,
-                    0: 0,
-                    1: 0,
-                  },
-                )
                 return (
                   <Table.Row key={t.topicId} textAlign="center">
                     <Table.Cell>
-                      <Image src={t.details.icon} size="tiny" />
-                      {t.details.name}
+                      <TopicInfo>
+                        <Image src={t.details.icon} size="tiny" />
+                        {t.details.name}
+                      </TopicInfo>
                     </Table.Cell>
-                    <Table.Cell className={ratingText}>
-                      {votes['-1']}
-                    </Table.Cell>
-                    <Table.Cell className={ratingText}>{votes['0']}</Table.Cell>
-                    <Table.Cell className={ratingText}>{votes['1']}</Table.Cell>
                     <Table.Cell>
                       <OverallRating rating={t.overall} />
                     </Table.Cell>
                     <Table.Cell>
                       <Trend trend={t.trend} />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Markdown className={markdown} source={t.comments} />
                     </Table.Cell>
                   </Table.Row>
                 )
@@ -93,7 +79,15 @@ const Trend = ({ trend }) => {
 export default SessionReport
 
 // #region styles
-const ratingText = css`
-  font-size: 1.4em;
+const TopicInfo = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+`
+
+const markdown = css`
+  & li {
+    text-align: left;
+  }
 `
 // #endregion

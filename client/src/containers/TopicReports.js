@@ -41,7 +41,7 @@ const TopicReports = ({ teamId }) => (
                   <VoteColumn key={`${session.id}-${index}`}>
                     <DateBlock>
                       <span>{`#${arr.length - index}`}</span>
-                      {moment(session.created).format('DD-MM:HH-mm')}
+                      {moment(session.created).format('DD-MM HH:mm:ss')}
                     </DateBlock>
                     {session.topics.map(t => (
                       <VoteIcon key={t.topicId} overall={t.overall} />
